@@ -6,8 +6,8 @@
 
 
 int* channels[8][20];
-int currentBuffer[8];
-int currentSample[8];
+int* currentBuffer;
+int* currentSample;
 int nbrChannels=2;
 int nbrSamples=256;
 
@@ -15,14 +15,17 @@ int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",nbrChannels,nbrSamples);
 	int i;
 	int j;
+	currentSample = malloc(sizeof(int)*nbrChannels);
+	currentBuffer = malloc(sizeof(int)*nbrChannels);
 	for(i = 0; i<nbrChannels;i++ )
 	{
-		printf("i");
+		printf("%d\n",i);
 		currentSample[i]=0;
 		currentBuffer[i]=0;
 		printf("i");
-		for(j=0; j<nbrSamples;i++)
+		for(j=0; j<nbrSamples;j++)
 		{
+			printf("%d\n",j);
 			channels[i][j]=malloc(sizeof(int)*nbrSamples);
 			if(channels[i][j]==NULL){
 				return -1;
@@ -51,11 +54,10 @@ int addInBuffer(int channel, int value){
 	printf("Adding value\n");
 	channels[channel][currentBuffer[channel]][currentSample[channel]]=value;
 	currentSample[channel]++;
-	if(currentSample[channel]==nbrSamples){
-		(currentBuffer[channel]++)%20;
-		currentSample[channel]=0;
+	if(currentSample[channel]=nbrSamples){
+		currentSample[channel]=(currentSample[channel])%nbrSamples;
+		currentBuffer[channel]=(currentBuffer[channel]+1)%20;
 	}
-
 }
 
 int main (int argc, char *argv[]) 
