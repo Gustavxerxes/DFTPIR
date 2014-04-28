@@ -11,7 +11,7 @@ kiss_fft_scalar** channels[nbrBuffers];
 int* currentBuffer;
 int* currentSample;
 int nbrChannels=1; //Hur många pir vi använder
-int nbrSamples=512;
+int nbrSamples=1024;
 
 
 int createBuffer();
