@@ -18,7 +18,7 @@ int calculate((kiss_fft_scalar)** values){ //values borde vara av formen values[
 		leftTilFull = (leftTilFull - 1)
 	}
 	else{ //do some calculation
-	
+		
 	
 	}
 	

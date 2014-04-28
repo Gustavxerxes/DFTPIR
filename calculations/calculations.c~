@@ -11,7 +11,7 @@ int leftTilFull = 5;
 int calculate((kiss_fft_scalar)** values){ //values borde vara av formen values[channels][nbrSamples]
 	int i;
 	for(i = 0; i<nbrChannels;i++){
-		calculate_fftr(values[i], nbrSamles,out[calc][i]);
+		calculate_fftr(values[i], nbrSamples,out[calc][i]);
 	}
 
 	if(leftTilFull){
