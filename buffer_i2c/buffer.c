@@ -18,12 +18,12 @@ int createBuffer(){
 		printf("%d\n",i);
 		currentSample[i]=0;
 		currentBuffer[i]=0;
-		channels[i]=malloc(sizeof(int)*nbrChannels);
+		channels[i]=malloc(sizeof((kiss_fft_scalar)*)*nbrChannels);
 		printf("i");
 		for(j=0; j<nbrChannels;j++)
 		{
 			printf("%d\n",j);
-			channels[i][j]=malloc(sizeof(int)*nbrSamples);
+			channels[i][j]=malloc(sizeof((kiss_fft_scalar))*nbrSamples);
 			if(channels[i][j]==NULL){
 				return -1;
 				printf("failed allocate");
@@ -53,7 +53,7 @@ int deallocBuffer(){
 }
 bool addInBuffer(int channel, int value){
 	printf("Adding value\n");
-	channels[currentBuffer[channel]][channel][currentSample[channel]]=value;
+	channels[currentBuffer[channel]][channel][currentSample[channel]]=(kiss_fft_scalar) value;
 	currentSample[channel]++;
 	if(currentSample[channel]=nbrSamples){
 		currentSample[channel]=(currentSample[channel])%nbrSamples;
@@ -63,7 +63,7 @@ bool addInBuffer(int channel, int value){
 	return false;
 }
 
-int* getBuffer(int buffer){
+(kiss_fft_scalar)* getBuffer(int buffer){
 	return channels[buffer];
 }
 

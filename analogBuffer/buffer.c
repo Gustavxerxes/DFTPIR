@@ -4,7 +4,7 @@
 #include <fcntl.h> /*O_RDONLY*/ 
 #include <unistd.h>  /*read*/ 
 
-
+//DO NOT USE
 int* channels[8][20];
 int currentBuffer[8];
 int currentSample[8];
