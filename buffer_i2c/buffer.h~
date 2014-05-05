@@ -1,0 +1,21 @@
+
+
+#define N_PIR 1 //Hur många pir vi använder
+#define N_SAMPLES 1024
+#define RINGBUFFER_SIZE 8000
+#define N_BEFOR_FFT 100
+
+kiss_fft_scalar channels[N_PIR][RINGBUFFER_SIZE];
+int first; //Pointer to next sampel to start FFT
+int currentSample[N_PIR]; // where to add next value
+int last_FFT; // how many samples sinse last FFT
+int ready; // Indicates when to start FFT
+
+
+int createBuffer();
+
+
+
+int addInBuffer(int channel, int value);
+
+kiss_fft_scalar* getBuffer(kiss_fft_scalar** values);

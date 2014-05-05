@@ -5,11 +5,7 @@
 #include <unistd.h>  /*read*/ 
 
 
-int* channels[8][20];
-int* currentBuffer;
-int* currentSample;
-int nbrChannels=2;
-int nbrSamples=256;
+
 
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",nbrChannels,nbrSamples);
@@ -17,16 +13,17 @@ int createBuffer(){
 	int j;
 	currentSample = malloc(sizeof(int)*nbrChannels);
 	currentBuffer = malloc(sizeof(int)*nbrChannels);
-	for(i = 0; i<nbrChannels;i++ )
+	for(i = 0; i<nbrBuffers;i++ )
 	{
 		printf("%d\n",i);
 		currentSample[i]=0;
 		currentBuffer[i]=0;
+		channels[i]=malloc(sizeof((kiss_fft_scalar)*)*nbrChannels);
 		printf("i");
-		for(j=0; j<nbrSamples;j++)
+		for(j=0; j<nbrChannels;j++)
 		{
 			printf("%d\n",j);
-			channels[i][j]=malloc(sizeof(int)*nbrSamples);
+			channels[i][j]=malloc(sizeof((kiss_fft_scalar))*nbrSamples);
 			if(channels[i][j]==NULL){
 				return -1;
 				printf("failed allocate");
@@ -38,29 +35,39 @@ int createBuffer(){
 int deallocBuffer(){
 	int i;
 	int j;
-	for(i = 0; i<nbrChannels;i++ )
+	free(currentBuffer);
+	free(currentSample);
+	for(i = 0; i<nbrBuffers;i++ )
 	{
-		currentBuffer[i]=0;
-		currentSample[i]=0;
-		for(j=0; j<nbrSamples;i++)
+
+		for(j=0; j<nbrChannels;i++)
 		{
+			
 			free(channels[i][j]);
 			channels[i][j] = NULL;
 		}
+		free(channels[i]);
+		channels[i]=NULL;
 	}
 		
 }
-int addInBuffer(int channel, int value){
+bool addInBuffer(int channel, int value){
 	printf("Adding value\n");
-	channels[channel][currentBuffer[channel]][currentSample[channel]]=value;
+	channels[currentBuffer[channel]][channel][currentSample[channel]]=(kiss_fft_scalar) value;
 	currentSample[channel]++;
 	if(currentSample[channel]=nbrSamples){
 		currentSample[channel]=(currentSample[channel])%nbrSamples;
-		currentBuffer[channel]=(currentBuffer[channel]+1)%20;
+		currentBuffer[channel]=(currentBuffer[channel]+1)%nbrBuffers;
+		return true;
 	}
+	return false;
 }
 
-int main (int argc, char *argv[]) 
+(kiss_fft_scalar)* getBuffer(int buffer){
+	return channels[buffer];
+}
+
+int Oldmain (int argc, char *argv[]) 
 
 {
 	int fd[nbrChannels], ret; 

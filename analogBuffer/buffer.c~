@@ -8,7 +8,7 @@
 int* channels[8][20];
 int currentBuffer[8];
 int currentSample[8];
-int nbrChannels=1;
+int nbrChannels=2;
 int nbrSamples=256;
 
 int createBuffer(){
@@ -60,19 +60,18 @@ int addInBuffer(int channel, int value){
 
 int main (int argc, char *argv[]) 
 
-{ 
-	int channel = 2;
-	int fd[channel], ret; 
+{
+	int fd[nbrChannels], ret; 
 	int j, i, value; 
 	char buffer[60]; 
-	for (j=0;j<channel;j++){ 
+	for (j=0;j<nbrChannels;j++){ 
 		sprintf (buffer, "/sys/devices/ocp.2/helper.14/AIN%d", j); 
 		printf("%s\n",buffer); 
 		fd[j] = open(buffer, O_RDONLY); 
 	} 
 	createBuffer();
 	while(1){
-		for (j=0;j<channel;j++){ 
+		for (j=0;j<nbrChannels;j++){ 
 			ret = read(fd[j], buffer, sizeof(buffer)); 
 			if (ret == -1) { 
 				printf("Error reading device AIN%d \n", j); 
@@ -87,7 +86,7 @@ int main (int argc, char *argv[])
 
 	}
 
-	for (j=0;j<channel;j++){ 
+	for (j=0;j<nbrChannels;j++){ 
 			close(fd[j]); 
 	} 
 	exit (0); 
