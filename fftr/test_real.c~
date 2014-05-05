@@ -36,7 +36,7 @@ typedef struct {
 }
 
 
-int main(int argc,char ** argv)
+int main1(int argc,char ** argv)
 {
   int nfft=6;
   kiss_fft_cpx out[6];

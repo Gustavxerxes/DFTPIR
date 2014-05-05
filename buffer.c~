@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "kiss_fftr.h"
 #include "buffer.h"
-#include "fftr/kiss_fftr.h"
+
 
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
@@ -36,7 +37,7 @@ int addInBuffer(int channel, int value){
 	return 0;
 }
 
-void getBuffer(kiss_fft_scalar** values){
+void getBuffer(kiss_fft_scalar values[N_PIR][N_SAMPLES]){
 	int start = first;
 	first += N_BEFOR_FFT;
 	int i;
@@ -53,38 +54,5 @@ void getBuffer(kiss_fft_scalar** values){
 	}
 }
 
-int Oldmain (int argc, char *argv[]) 
-
-{
-	int fd[nbrChannels], ret; 
-	int j, i, value; 
-	char buffer[60]; 
-	for (j=0;j<nbrChannels;j++){ 
-		sprintf (buffer, "/sys/devices/ocp.2/helper.14/AIN%d", j); 
-		printf("%s\n",buffer); 
-		fd[j] = open(buffer, O_RDONLY); 
-	} 
-	createBuffer();
-	while(1){
-		for (j=0;j<nbrChannels;j++){ 
-			ret = read(fd[j], buffer, sizeof(buffer)); 
-			if (ret == -1) { 
-				printf("Error reading device AIN%d \n", j); 
-			}else{                         
-				printf("Reading");
-				buffer[ret] = 0; 
-				addInBuffer(j,atoi(buffer)); 
-				lseek(fd[j], 0, 0);  
-			} 
-		} 
-
-
-	}
-
-	for (j=0;j<nbrChannels;j++){ 
-			close(fd[j]); 
-	} 
-	exit (0); 
-}
 
 

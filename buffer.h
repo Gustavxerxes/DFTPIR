@@ -1,9 +1,9 @@
 
 
-#define N_PIR 1 //Hur många pir vi använder
-#define N_SAMPLES 1024
+#define N_PIR 2 //Hur många pir vi använder
+#define N_SAMPLES 128
 #define RINGBUFFER_SIZE 8000
-#define N_BEFOR_FFT 100
+#define N_BEFOR_FFT 10
 
 kiss_fft_scalar channels[N_PIR][RINGBUFFER_SIZE];
 int first; //Pointer to next sampel to start FFT
@@ -18,4 +18,5 @@ int createBuffer();
 
 int addInBuffer(int channel, int value);
 
-kiss_fft_scalar* getBuffer(kiss_fft_scalar** values);
+void getBuffer(kiss_fft_scalar values[N_PIR][N_SAMPLES]);
+
