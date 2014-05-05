@@ -1,0 +1,94 @@
+#
+# Makefile to make the file libclientserver.a, containing
+# connection.o and server.o
+#
+# Define the compiler. g++ can be
+# changed to clang++.
+CXX = g++
+CC  = g++
+
+app = Pong
+
+srcExt = cc
+srcDir = ../src
+objDir = ../bin
+binDir = ../bin
+inc = inc
+
+# Define preprocessor, compiler, and linker flags. Uncomment the # lines
+# if you use clang++ and wish to use libc++ instead of libstdc++.
+CXXFLAGS =  -g -O2 -Wall -W -pedantic-errors
+CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast 
+CXXFLAGS += -std=c++11 
+CXXFLAGS += -g
+LDFLAGS =   -g
+# CPPFLAGS =  -stdlib=libc++
+# CXXFLAGS += -stdlib=libc++
+# LDFLAGS += -stdlib=libc++
+debug = 1
+
+
+
+#************************ DO NOT EDIT BELOW THIS LINE! ************************
+
+ifeq ($(debug),1)
+	debug=-g
+else
+	debug=
+endif
+inc := $(addprefix -I,$(inc))
+libs := $(addprefix -l,$(libs))
+libDir := $(addprefix -L,$(libDir))
+CXXFLAGS += -c $(debug) $(inc) $(libDir) $(libs)
+sources := $(shell find $(srcDir) -name '*.$(srcExt)')
+srcDirs := $(shell find . -name '*.$(srcExt)' -exec dirname {} \; | uniq)
+objects := $(patsubst %.$(srcExt),$(objDir)/%.o,$(sources))
+
+ifeq ($(srcExt),cpp)
+	CC = $(CXX)
+else
+	CXXFLAGS += -std=c++11
+endif
+
+.phony: all clean distclean
+
+
+all: $(binDir)/$(app)
+
+$(binDir)/$(app): buildrepo $(objects)
+	@mkdir -p `dirname $@`
+	@echo "Linking $@..."
+	@$(CC) $(objects) $(LDFLAGS) -o $@
+
+$(objDir)/%.o: %.$(srcExt)
+	@echo "Generating dependencies for $<..."
+	@$(call make-depend,$<,$@,$(subst .o,.d,$@))
+	@echo "Compiling $<..."
+	@$(CC) $(CXXFLAGS) $< -o $@
+
+clean:
+	$(RM) -r $(objDir)
+
+distclean: clean
+	$(RM) -r $(binDir)/$(app)
+
+buildrepo:
+	@$(call make-repo)
+
+define make-repo
+   for dir in $(srcDirs); \
+   do \
+	mkdir -p $(objDir)/$$dir; \
+   done
+endef
+
+
+# usage: $(call make-depend,source-file,object-file,depend-file)
+define make-depend
+  $(CC) -MM       \
+        -MF $3    \
+        -MP       \
+        -MT $2    \
+        $(CFlags) \
+        $1
+endef
