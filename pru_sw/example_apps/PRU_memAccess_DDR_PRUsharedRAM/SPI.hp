@@ -1,0 +1,90 @@
+#define NOP   MOV r0, r0
+ 
+#define SPI_TX r8.w2 
+#define SPI_RX r8.w0
+#define DEL_REG r7
+#define SPI1_SCLK   R30.t10
+#define SPI1_MISO   R31.t8
+#define SPI1_MOSI   R30.t9
+#define SPI1_CS0    R30.t11
+#define SPI1_CS     SPI1_CS0
+ 
+#define LSPI_SCLK SPI1_SCLK
+#define LSPI_MOSI SPI1_MOSI
+#define LSPI_MISO SPI1_MISO
+#define LSPI_CS0  SPI1_CS0
+#define LSPI_CS   LSPI_CS0
+  
+
+
+.macro SPI_XFER_BIT
+.mparam BIT
+ 
+    // Output this should take 4 clks
+    QBBS MOSI_HIGH, SPI_TX, BIT
+    CLR LSPI_MOSI
+    JMP MOSI_DONE
+    MOSI_HIGH:
+    SET LSPI_MOSI
+    NOP
+    MOSI_DONE:
+	DEL 10 // delay 21 clocks
+	
+    SET LSPI_SCLK
+    
+	DEL 49 // delay 99 clocks, high state of SLKC should thus last 100 clocks or 500ns
+	
+	
+	CLR LSPI_SCLK
+
+	DEL 20 // delay 41 clocks, or 205ns
+    
+    // Input 
+    QBBS MISO_HIGH, LSPI_MISO
+    CLR SPI_RX, BIT
+    JMP MISO_DONE
+    MISO_HIGH:
+    SET SPI_RX, BIT
+    NOP
+    MISO_DONE:
+ 
+    DEL 14 // delay 29 clocks making a total of 4+1+21+41+4+29= 100 clocks or 500ns for low state of SCLK
+
+ 
+.endm
+ 
+.macro SPI_XFER_WORD
+
+	CLR LSPI_SCLK
+	CLR LSPI_CS
+	DEL 10 // delay 10*2+1 = 21 sclk's (105ns), in order for ADC to get ready for command data
+	
+    SPI_XFER_BIT 15
+    SPI_XFER_BIT 14
+    SPI_XFER_BIT 13
+    SPI_XFER_BIT 12
+    SPI_XFER_BIT 11
+    SPI_XFER_BIT 10
+    SPI_XFER_BIT 9
+    SPI_XFER_BIT 8
+    SPI_XFER_BIT 7
+    SPI_XFER_BIT 6
+    SPI_XFER_BIT 5
+    SPI_XFER_BIT 4
+    SPI_XFER_BIT 3
+    SPI_XFER_BIT 2
+    SPI_XFER_BIT 1
+    SPI_XFER_BIT 0 // read value should now be in SPI_RX (r8.w2)
+ 
+	SET LSPI_CS
+	CLR LSPI_MOSI
+.endm
+
+.macro DEL //delays the processor for 2*DELCKL+1 cycles
+.mparam DELCLK
+
+		MOV DEL_REG, DELCLK
+	DEL1:
+		SUB DEL_REG, DEL_REG, 1
+		QBNE DEL1, DEL_REG, 0 // loop if we've not finished
+.endm
