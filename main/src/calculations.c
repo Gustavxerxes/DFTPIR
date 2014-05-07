@@ -24,10 +24,10 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		for(j = 0 ; j < N_PIR ; j++){
 			printf("PIR %d: ",j);
 			for(i = 0; i < 100 ; i ++){
-				printf("%d ",(int)values[j][i]);
+				//printf("%d ",(int)values[j][i]);
 			}
-			printf("\n");
-		}
+			
+		}printf("i\n");
 	}
 	
 	calc=(calc + 1) % SAVE_FFT;
