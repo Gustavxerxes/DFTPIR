@@ -1,7 +1,7 @@
 
 
 .origin 0
-.entrypoint AXIS_PIR
+.entrypoint SETUP
 
 
 
@@ -20,27 +20,30 @@
 #define ARM_PRU0_INTERRUPT      21
 #define ARM_PRU1_INTERRUPT      22
 #define SCR_BANK0				10
+#define XFR_OFFSET				r0
+#define CHAN_OFFSET				r1.w2
+#define CHAN_PTR				r1.b1
+#define CHAN_COUNT				r1.b0
+#define NUM_CHANNELS			8
 
-
-#define NUM_CHANNELS	8
-
+#define PRU1_PRU0_INTERRUPT     33+0x10
 
 .macro SEND_DATA
 	//sending data to host
-	SBCO      r9, CONST_PRUSHAREDRAM, 0, 16
-	MOV       r31.b0, PRU1_ARM_INTERRUPT+16
-	
+
 	//this is for sending data to PRU0
-	LDI r0, 0x0 //setting write offset to zero
-	XOUT SCR_BANK0, r9, 16 
-	
-	
+	LDI r0, 0x00000000 //setting write offset to zero
+	XOUT SCR_BANK0, r9, NUM_CHANNELS*2
+
+	//send interrupt
+	LDI r31.b0, PRU1_PRU0_INTERRUPT
+
+
+
 .endm
 
-AXIS_PIR:
-
- 
-/*Magic stuff, see http://www.embedded-things.com/bbb/understanding-bbb-pru-shared-memory-access */
+SETUP:
+	/*semi-Magic stuff, see http://www.embedded-things.com/bbb/understanding-bbb-pru-shared-memory-access */
 	LBCO    r0, CONST_PRUCFG, 4, 4         
 	CLR     r0, r0, 4
 	SBCO    r0, CONST_PRUCFG, 4, 4
@@ -48,49 +51,48 @@ AXIS_PIR:
 	MOV     r1, PRU1_CTRL + CTPPR0
 	SBBO    r0, r1, 0, 4
 	
-	
-//enabling scratchpad for PRU to PRU communication
-	
-	LBCO 	r0, CONST_PRUCFG, 36, 4 //SPP register loaded to r0
+	//enabling scratchpad for PRU to PRU communication
+	LBCO 	r0, CONST_PRUCFG, 0x34, 4 //SPP register loaded to r0
 	SET		r0, 0 //setting PRU1 scratchpad priority
 	SET		r0, 1 //setting XFR enable
-	SBCO	r0, CONST_PRUCFG, 36, 4
-	
-	
-
-	LDI r6, 0x0ffff // load loop count
+	SBCO	r0, CONST_PRUCFG, 0x34, 4 //storing settings to SPP register
+	JMP AXIS_PIR
+	LDI CHAN_OFFSET, 0x0800
 	
 
-	LDI r3.w0, 0x0800 // this is needed to increment channels
+
+
+
+AXIS_PIR:
+
+
 	
+		
 	SEND_LOOP:
 		
 		LDI SPI_TX, 0xC000 //reset command for each loop
-		LDI r1.b3, 0x24 //this will make r1.b3 point to register r9
-		LDI r1.b0, NUM_CHANNELS  
+		LDI CHAN_PTR, 0x24 //storage pointer, 0x24 = r10
+		LDI CHAN_COUNT, 0x0 //reset channel count
 
 
 		CHANNEL_LOOP:
 			SPI_XFER_WORD //send command and get data
 
-			MVIW *r1.b3++, SPI_RX // move recieved data to r9...(r9+NUM_CHANNELS)/2  (since there are 2 words in each register)
+			MVIW *CHAN_PTR++, SPI_RX // move recieved data to r9...(r9+NUM_CHANNELS)/2  (since there are 2 words in each register)
 
 			DEL 30  //delay around 300ns
-			ADD SPI_TX, SPI_TX, r3.w0// go to next channel
-			sub r1.b0, r1.b0, 1 //updating loop count 
-		QBNE CHANNEL_LOOP, r1.b0, 0x0
+			ADD SPI_TX, SPI_TX, CHAN_OFFSET// go to next channel
+			ADD CHAN_COUNT, CHAN_COUNT, 1 //updating loop count 
+		QBNE CHANNEL_LOOP, CHAN_COUNT, NUM_CHANNELS
 			
 		SEND_DATA
+
+		//TODO: make this nicer	
 		DEL 0xffff // delay to get 
 		DEL 0x53d9 // 1khz sampling bursts
-		SUB r6, r6, 1
 
-	QBNE SEND_LOOP, r6, 0x0
+	JMP SEND_LOOP
 	
-	
-	//Sending interrupt
-	MOV       r31.b0, PRU1_ARM_INTERRUPT+16
-
     // Halt the processor
     HALT
 
