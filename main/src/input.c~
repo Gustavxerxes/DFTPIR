@@ -53,8 +53,9 @@ int readinput(){
 	   		for(i = 0; i < N_BEFOR_FFT; i++){
      	   		value = sharedMem_int[k];//
      	   		//printf("%d ",value);
-    				//done = addInBuffer(currentChannel, value);
-				currentChannel = (currentChannel + 1) % N_PIR;
+    				addInBuffer(currentChannel, value & 0xFFFF0000);
+    				addInBuffer(currentChannel + 1, value & 0xFFFF);
+				currentChannel = (currentChannel + 1) % (N_PIR>>2);
 			}
 			getBuffer(temp);
 			calculate(temp);

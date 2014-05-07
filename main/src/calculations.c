@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kiss_fftr.h"
+#include "define.h"
 #include "buffer.h"
 #include "calculations.h"
 

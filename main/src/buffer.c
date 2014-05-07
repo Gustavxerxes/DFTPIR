@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kiss_fftr.h"
-#include "buffer.h"
 #include "define.h"
+#include "buffer.h"
+
 
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);

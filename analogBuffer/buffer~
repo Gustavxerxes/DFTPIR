@@ -1,8 +1,0 @@
-
-#include <stdio.h>
-#include <linux/iio/iio.h>
-
-
-int main(){
-return 0;
-}

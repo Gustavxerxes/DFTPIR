@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "prussdrv.h"
+#include <pruss_intc_mapping.h>
+
 #include "define.h"
 
 #include "_kiss_fft_guts.h"
