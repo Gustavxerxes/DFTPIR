@@ -1,7 +1,7 @@
-CROSS_COMPILE?=arm-arago-linux-gnueabi-
+CROSS_COMPILE?=
 
-LIBDIR_APP_LOADER?=../../app_loader/lib
-INCDIR_APP_LOADER?=../../app_loader/include
+LIBDIR_APP_LOADER?=../app_loader/lib
+INCDIR_APP_LOADER?=../app_loader/include
 BINDIR?=../bin
 
 CFLAGS+= -Wall -std=c99 -I$(INCDIR_APP_LOADER) -D__DEBUG -O2 -mtune=cortex-a8 -march=armv7-a

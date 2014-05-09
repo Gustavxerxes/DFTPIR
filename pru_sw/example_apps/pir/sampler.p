@@ -1,10 +1,3 @@
-
-
-.origin 0
-.entrypoint SETUP
-
-
-
 #include "SPI.hp"
 
 #define CONST_PRUCFG         C4
@@ -25,18 +18,34 @@
 #define CHAN_PTR				r1.b1
 #define CHAN_COUNT				r1.b0
 #define NUM_CHANNELS			8
+#define PRU1_PRU0_INTERRUPT     18
 
-#define PRU1_PRU0_INTERRUPT     33+0x10
+.origin 0
+.entrypoint SETUP
+
+
+
+
 
 .macro SEND_DATA
 	//sending data to host
 
 	//this is for sending data to PRU0
+	/*
+	LDI r9.w0, 0x0001
+	LDI r9.w2, 0x0002
+	LDI r10.w0, 0x0003
+	LDI r10.w2, 0x0004
+	LDI r11.w0, 0x0005
+	LDI r11.w2, 0x0006
+	LDI r12.w0, 0x0007
+	LDI r12.w2, 0x0008
+	*/
 	LDI r0, 0x00000000 //setting write offset to zero
 	XOUT SCR_BANK0, r9, NUM_CHANNELS*2
 
 	//send interrupt
-	LDI r31.b0, PRU1_PRU0_INTERRUPT
+	MOV r31.b0, PRU1_PRU0_INTERRUPT+16
 
 
 
@@ -56,16 +65,17 @@ SETUP:
 	SET		r0, 0 //setting PRU1 scratchpad priority
 	SET		r0, 1 //setting XFR enable
 	SBCO	r0, CONST_PRUCFG, 0x34, 4 //storing settings to SPP register
-	JMP AXIS_PIR
 	LDI CHAN_OFFSET, 0x0800
-	
 
+
+	
+	JMP AXIS_PIR
 
 
 
 AXIS_PIR:
 
-
+	
 	
 		
 	SEND_LOOP:
@@ -86,11 +96,11 @@ AXIS_PIR:
 		QBNE CHANNEL_LOOP, CHAN_COUNT, NUM_CHANNELS
 			
 		SEND_DATA
-
-		//TODO: make this nicer	
-		DEL 0xffff // delay to get 
-		DEL 0x53d9 // 1khz sampling bursts
-
+		LDI r6.w0, 0xda78
+		LDI r6.w2, 0x2
+		DEL r6 // delay to get 
+	
+		
 	JMP SEND_LOOP
 	
     // Halt the processor

@@ -30,7 +30,7 @@
     MOSI_DONE:
 	DEL 10 // delay 21 clocks
 	
-    SET LSPI_SCLK
+	SET LSPI_SCLK
     
 	DEL 49 // delay 99 clocks, high state of SLKC should thus last 100 clocks or 500ns
 	
