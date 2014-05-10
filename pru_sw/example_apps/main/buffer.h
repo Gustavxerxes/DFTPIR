@@ -1,5 +1,7 @@
+#ifndef buff_h
+#define buff_h
 
-
+#include "kiss_fftr.h"
 
 kiss_fft_scalar channels[N_PIR][RINGBUFFER_SIZE];
 int first; //Pointer to next sampel to start FFT
@@ -16,3 +18,4 @@ int addInBuffer(int channel, int value);
 
 void getBuffer(kiss_fft_scalar values[N_PIR][N_SAMPLES]);
 
+#endif
