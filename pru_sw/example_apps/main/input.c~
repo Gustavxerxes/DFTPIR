@@ -17,7 +17,6 @@
 #include "kiss_fftr.h"
 #include "buffer.h"
 #include "calculations.h"
-#include <pthread.h>
 #include "pir_ringbuff.h"
 
 
@@ -66,7 +65,7 @@ int main(){
 	
 	pthread_cond_init(&myconvar,NULL);
 	int start = prussStart(); //needed
-	pthread_create(&thread, NULL,calc_thread);
+	pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
 	while(1){
 	
