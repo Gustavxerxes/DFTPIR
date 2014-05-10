@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "kiss_fftr.h"
 #include "define.h"
 #include "buffer.h"
@@ -9,6 +10,9 @@
 kiss_fft_cpx out[SAVE_FFT][N_PIR][N_SAMPLES]; 
 int calc = 0;
 int leftTilFull = SAVE_FFT;
+
+
+
 
 int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av formen values[channels][nbrSamples]
 	int i;

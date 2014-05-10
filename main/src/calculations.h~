@@ -1,6 +1,9 @@
-#define SAVE_FFT 10
-#define threshold 1
-int scale[N_PIR];
+typedef struct thread_data thread_data{
+	pthread_mutex_t m;
+	pthread_cond_t myconvar;
+}
+
+int scale[N_PIR][N_PIR];
 
 void setScale(int* s);
 

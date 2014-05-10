@@ -37,8 +37,7 @@ int readinput(){
 	int done;
 	int i;
 	unsigned int ret;
-	double start;
-	double end;
+
    // tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
 /*
     printf("\nINFO: Starting %s example.\r\n", "PRU_memAcc_DDR_sharedRAM");
@@ -72,15 +71,44 @@ int readinput(){
     				addInBuffer(currentChannel + 1, value );
 				currentChannel = (currentChannel + 1) % (N_PIR>>1);
 			}
-			start = sec();
+			
 			getBuffer(temp);
 			calculate(temp);
-			end = sec();
-			printf("Time: %f\n",end-start);
+			
+			
+	}
+}
+
+pthread_t thread[N_THREADS];
+pthread_mutex_t m;
+pthread_cond_t myconvar;
+
+//pthread_mutex_init(&m, NULL);
+//pthread_cond_init(&myconvar,NULL);
+
+int calc_thread(void){
+	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
+	double start;
+	double end;
+	while(1){
+	pthread_mutex_lock(&m);
+		while(last_FFT < N_BEFORE_FFT){
+			pthread_cond_wait(&myconvar,&m);
+		}
+		if(last_FFT >= N_BEFORE_FFT){
+			start = sec();
+			getBuffer(temp);
+			
+		}
+	pthread_mutex_unlock(&m);
+	calculate(temp);
+	end = sec();
+	printf("Time: %f\n",end-start);
 	}
 }
 
 int main(){
+
 	createBuffer();
 	readinput();
 	

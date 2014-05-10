@@ -1,5 +1,5 @@
 
-int scale[N_PIR];
+int scale[N_PIR][N_PIR];
 
 void setScale(int* s);
 
