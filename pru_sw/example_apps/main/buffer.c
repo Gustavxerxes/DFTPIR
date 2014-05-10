@@ -26,9 +26,9 @@ int addInBuffer(int channel, int value){
 		currentSample[channel]=0;
 	}
 	if(channel == (N_PIR-1)){
-	pthread_mutex_lock(&m);
+	//pthread_mutex_lock(&m);
 		last_FFT++;
-	pthread_mutex_unlock(&m);
+	//pthread_mutex_unlock(&m);
 		if(ready == 0 && currentSample[channel] > N_SAMPLES){
 			ready = 1;
 		}

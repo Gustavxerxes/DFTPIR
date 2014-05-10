@@ -45,26 +45,24 @@ pthread_cond_t myconvar;
 
 
 void* calc_thread(void* i){
-	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
-	double start;
-	double end;
+	
+	
 	while(1){
-	pthread_mutex_lock(&m);
-<<<<<<< HEAD
+	//pthread_mutex_lock(&m);
+
 		while(last_FFT < N_BEFORE_FFT){
 			printf("waitning...");
-=======
+
 		while(last_FFT < N_BEFOR_FFT){
->>>>>>> e92c059c8c1dae69d2b33736ab21a7ed63b4f2a2
-			pthread_cond_wait(&myconvar,&m);
+	//		pthread_cond_wait(&myconvar,&m);
 			printf("out\n");
 		}
 		if(last_FFT >= N_BEFOR_FFT){
-			start = sec();
+			
 			getBuffer(temp);
 			
 		}
-	pthread_mutex_unlock(&m);
+	//pthread_mutex_unlock(&m);
 	calculate(temp);
 	end = sec();
 	printf("Time: %f\n",end-start);
@@ -73,16 +71,22 @@ void* calc_thread(void* i){
 
 int main(){
 	createBuffer();
-	
-	pthread_cond_init(&myconvar,NULL);
-	int start = prussStart(); //needed
-	pthread_create(&thread, NULL,calc_thread,0);
+	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
+	double start;
+	double end;
+	//pthread_cond_init(&myconvar,NULL);
+	prussStart(); //needed
+	//pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
 	while(1){
 	
 		ret = prussGetData();
 		if(ret == 1){
-			pthread_cond_signal(&myconvar);
+			start = sec();
+			getBuffer(temp);
+			calculate(temp);
+			end = sec();
+			printf("Time: %f\n",end-start);
 		}
 	}
 } 
