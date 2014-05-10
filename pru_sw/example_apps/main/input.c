@@ -70,7 +70,7 @@ int main(){
 	
 		ret = prussGetData(NULL);
 		if(ret == 1){
-			pthread_cond_wait(&myconvar,&m);
+			pthread_cond_signal(&myconvar);
 		}
 	}
 } 
