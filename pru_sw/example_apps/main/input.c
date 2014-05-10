@@ -79,7 +79,7 @@ int main(){
 	//pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
 	while(1){
-	
+		printf("while");
 		ret = prussGetData();
 		printf("done\n")
 		if(ret == 1){
