@@ -91,7 +91,7 @@ int prussGetData(void){
 	
 	for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
 		for(int i = 0 ; i< NUM_CHANNELS ; ++i){
-			retVal |= addInBuffer(sharedMem_chan[k+offset+i]);
+			retVal |= addInBuffer(i,sharedMem_chan[k+offset+i]);
 		}		
 	}
 	
