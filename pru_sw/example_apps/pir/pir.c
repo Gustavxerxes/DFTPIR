@@ -15,10 +15,13 @@
 
 #define OFFSET_SHAREDRAM 0		
 #define PRUSS0_SHARED_DATARAM    4
+#define SAMPLES_PR_PACKAGE 64
+#define NUM_CHANNELS 8
 
 
 static void *sharedMem;
 static uint32_t *sharedMem_int;
+static uint16_t *sharedMem_chan;
 
 int init_PRUSS(){
    
@@ -62,10 +65,8 @@ int init_PRUSS(){
     /* Allocate Shared PRU memory. */
     prussdrv_map_prumem(PRUSS0_SHARED_DATARAM, &sharedMem);
     sharedMem_int = (uint32_t*) sharedMem;
+    sharedMem_chan = (uint16_t*) sharedMem;
     
-    
-    printf("get event to channel 0 %d", prussdrv_get_event_to_channel_map(0));
-   printf("get event to channel 1 %d", prussdrv_get_event_to_channel_map(1));
 
 	return 0;
 }
@@ -84,20 +85,36 @@ int main (void)
 
 
     int ret = init_PRUSS();
+	uint16_t chan[NUM_CHANNELS][SAMPLES_PR_PACKAGE];
+	int offset = 0;
 
 
-	    printf("get event to channel 0 %d", prussdrv_get_event_to_channel_map(0));
 
-	for(int i = 0; i < 12; ){
+	while(1){
 		/* Wait until PRU0 has finished execution */
 		prussdrv_pru_wait_event(PRU_EVTOUT_0); // there's a bug that makes the pruss driver execute interrupts twice, se: https://github.com/beagleboard/am335x_pru_package/issues/3
-
-		for(int k = 0; k < 16 ; ++k){	
-			uint32_t result_0 = sharedMem_int[k];
-			printf(" %08x", result_0);
-			
+		prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
+		prussdrv_pru_wait_event(PRU_EVTOUT_0); // there's a bug that makes the pruss driver execute interrupts twice, se: https://github.com/beagleboard/am335x_pru_package/issues/3
+		prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
+		
+		uint32_t flag = sharedMem_int[0];
+		if(flag){
+			offset = 2;
+		} else {
+			offset = 2050;
 		}
-		printf("\n");
+		//printf("flag: %08x , data: ", flag);
+		
+		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
+			
+			for(int i = 0 ; i< NUM_CHANNELS ; ++i){
+				chan[i][k] = sharedMem_chan[k+offset+i];
+			}
+			
+			printf("chan 0 : %04.2f \n", chan[0][k]*3.2227);
+		
+		}
+		//printf("\n");
 		
 
 		prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
