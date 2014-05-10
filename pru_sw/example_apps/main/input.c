@@ -76,10 +76,11 @@ int main(){
 	double end;
 	//pthread_cond_init(&myconvar,NULL);
 	prussStart(); //needed
+	printf("..\n");
 	//pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
 	while(1){
-		printf("while");
+		printf("while\n");
 		ret = prussGetData();
 		printf("done\n")
 		if(ret == 1){
