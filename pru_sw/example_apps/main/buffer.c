@@ -4,10 +4,11 @@
 #include "define.h"
 #include "buffer.h"
 
-
+pthread_mutex_t m;
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
 	int i;
+	pthread_mutex_init(&m, NULL);
 	for(i = 0; i<N_PIR;i++ )
 	{
 		currentSample[i] = 0;
@@ -27,7 +28,9 @@ int addInBuffer(int channel, int value){
 		currentSample[channel]=0;
 	}
 	if(channel == (N_PIR-1)){
+	pthread_mutex_lock(&m);
 		last_FFT++;
+	pthread_mutex_unlock(&m);
 		if(ready == 0 && currentSample[channel] > N_SAMPLES){
 			ready = 1;
 		}
