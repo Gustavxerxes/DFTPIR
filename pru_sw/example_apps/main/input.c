@@ -20,10 +20,8 @@
 #include "pir_ringbuff.h"
 
 
-int indexOfBuffer;
 kiss_fft_scalar temp[N_PIR][N_SAMPLES];
-static void *sharedMem;
-static uint32_t *sharedMem_int;
+
 
 static double sec(void)
 {

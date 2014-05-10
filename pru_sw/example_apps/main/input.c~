@@ -39,7 +39,7 @@ pthread_t thread;
 pthread_cond_t myconvar;
 
 
-int calc_thread(void){
+void* calc_thread(void* i){
 	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
 	double start;
 	double end;
@@ -69,7 +69,7 @@ int main(){
 	int ret;
 	while(1){
 	
-		ret = prussGetData(NULL);
+		ret = prussGetData();
 		if(ret == 1){
 			pthread_cond_signal(&myconvar);
 		}
