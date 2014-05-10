@@ -43,10 +43,10 @@ pthread_t thread;
 
 pthread_cond_t myconvar;
 
-
+/*
 void* calc_thread(void* i){
 	
-	/*
+	
 	while(1){
 	//pthread_mutex_lock(&m);
 
@@ -66,8 +66,8 @@ void* calc_thread(void* i){
 	calculate(temp);
 	end = sec();
 	printf("Time: %f\n",end-start);
-	}*/
-}
+	}
+}*/
 
 int main(){
 	createBuffer();
