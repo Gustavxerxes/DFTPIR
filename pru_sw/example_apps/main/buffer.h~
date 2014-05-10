@@ -1,7 +1,7 @@
 #ifndef buff_h
 #define buff_h
 
-#include <pthread>
+#include <pthread.h>
 #include "kiss_fftr.h"
 
 kiss_fft_scalar channels[N_PIR][RINGBUFFER_SIZE];

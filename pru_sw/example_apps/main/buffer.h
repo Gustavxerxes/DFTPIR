@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include "kiss_fftr.h"
+#include "define.h"
 
 kiss_fft_scalar channels[N_PIR][RINGBUFFER_SIZE];
 int first; //Pointer to next sampel to start FFT
