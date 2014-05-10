@@ -78,14 +78,14 @@ int prussGetCols(void){
 int prussGetData(void){
 
 	/* ignore one of the twin interrupts */
-	puts("prussGetData1");
+	//puts("prussGetData1");
 	prussdrv_pru_wait_event(PRU_EVTOUT_0); 
-	puts("prussGetData2");
+	//puts("prussGetData2");
 	prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
-	puts("prussGetData3");
+	//puts("prussGetData3");
 	/* Wait until PRU0 has finished execution */
 	prussdrv_pru_wait_event(PRU_EVTOUT_0); // there's a bug that makes the pruss driver execute interrupts twice, se: https://github.com/beagleboard/am335x_pru_package/issues/3
-	puts("prussGetData4");
+	//puts("prussGetData4");
 	int retVal = 0;
 	uint32_t flag = sharedMem_chan[0];
 	unsigned int offset = 0;
@@ -98,7 +98,7 @@ int prussGetData(void){
 	for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
 		for(int i = 0 ; i< NUM_CHANNELS ; ++i){
 			retVal |= addInBuffer(i,sharedMem_chan[k+offset+i]);
-			puts(".");
+	//		puts(".");
 		}		
 	}
 	

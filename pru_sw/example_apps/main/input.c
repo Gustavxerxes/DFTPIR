@@ -15,7 +15,7 @@
 
 #include "_kiss_fft_guts.h"
 #include "kiss_fftr.h"
-#include "buffer.h"
+#include "buffer_1.h"
 #include "calculations.h"
 #include "pir_ringbuff.h"
 

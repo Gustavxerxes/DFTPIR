@@ -12,7 +12,7 @@
 #include "prussdrv.h"
 #include <pruss_intc_mapping.h>
 #include "pir_ringbuff.h"
-#include "buffer.h"
+#include "buffer_1.h"
 
 /* initiates and starts the pruss */
 int prussStart(void){
