@@ -81,6 +81,7 @@ int main(){
 	while(1){
 	
 		ret = prussGetData();
+		printf("done\n")
 		if(ret == 1){
 			start = sec();
 			getBuffer(temp);
