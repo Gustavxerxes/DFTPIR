@@ -12,6 +12,7 @@
 #include "prussdrv.h"
 #include <pruss_intc_mapping.h>
 #include "pir_ringbuff.h"
+#include "buffer.h"
 
 /* initiates and starts the pruss */
 int prussStart(void){
@@ -71,7 +72,7 @@ int prussGetCols(void){
 
 
 /* Funktion to get the data to the vector*/
-int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]){
+int prussGetData(void){
 
 	/* ignore one of the twin interrupts */
 	prussdrv_pru_wait_event(PRU_EVTOUT_0); 
@@ -90,7 +91,7 @@ int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]){
 	
 	for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
 		for(int i = 0 ; i< NUM_CHANNELS ; ++i){
-			retVal |= addbuffer(sharedMem_chan[k+offset+i]);
+			retVal |= addinbuffer(sharedMem_chan[k+offset+i]);
 		}		
 	}
 	

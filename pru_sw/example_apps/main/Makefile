@@ -12,7 +12,7 @@ TARGET=$(BINDIR)/main
 _DEPS =
 DEPS = $(patsubst %,$(INCDIR_APP_LOADER)/%,$(_DEPS))
 
-_OBJ =  pir_ringbuff.o
+_OBJ =  pir_ringbuff.o input.o buffer.o calculations.o kiss_fftr.o kiss_fft.o 
 OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
 

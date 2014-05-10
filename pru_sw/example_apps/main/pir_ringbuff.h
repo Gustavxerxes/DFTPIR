@@ -13,7 +13,7 @@ static uint16_t *sharedMem_chan;
 int prussStart(void);
 int prussGetRows(void);
 int prussGetCols(void);
-int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]);
+int prussGetData(void);
 int prussStop(void);
 
 
