@@ -20,10 +20,8 @@
 #include "pir_ringbuff.h"
 
 
-int indexOfBuffer;
 kiss_fft_scalar temp[N_PIR][N_SAMPLES];
-static void *sharedMem;
-static uint32_t *sharedMem_int;
+
 
 static double sec(void)
 {
@@ -46,7 +44,9 @@ void* calc_thread(void* i){
 	while(1){
 	pthread_mutex_lock(&m);
 		while(last_FFT < N_BEFORE_FFT){
+			printf("waitning...");
 			pthread_cond_wait(&myconvar,&m);
+			printf("out");
 		}
 		if(last_FFT >= N_BEFORE_FFT){
 			start = sec();

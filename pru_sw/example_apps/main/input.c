@@ -44,7 +44,9 @@ void* calc_thread(void* i){
 	while(1){
 	pthread_mutex_lock(&m);
 		while(last_FFT < N_BEFORE_FFT){
+			printf("waitning...");
 			pthread_cond_wait(&myconvar,&m);
+			printf("out\n");
 		}
 		if(last_FFT >= N_BEFORE_FFT){
 			start = sec();
