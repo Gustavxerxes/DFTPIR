@@ -18,19 +18,22 @@ int main (void){
 	int rows = prussGetRows(); //not used
 	int cols = prussGetCols(); //not used
 	uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]; //needed
-
+	
+	printf("[ \n");
 	for(int j = 0; j < 1000; ++j){
 
 
 		prussGetData(matrix); //needed
 		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
-			for(int i = 0 ; i< NUM_CHANNELS ; ++i){
+			for(int i = 0 ; i< 2; ++i){
 				//printf("chan %d : %04.2f ", i , matrix[i][k]*3.2227);
 				printf("%04.2f, " , matrix[i][k]*3.2227);
 			}
 			printf(";\n");
 		}
 	}
+	printf("] \n");
+	
 
 	int prussStop(void); //good to have in end
 }
