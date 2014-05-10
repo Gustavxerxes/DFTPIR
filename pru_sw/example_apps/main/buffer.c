@@ -6,7 +6,7 @@ int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
 	int i;
 	last_FFT = 0;
-	pthread_mutex_init(&m, NULL);
+	//pthread_mutex_init(&m, NULL);
 	for(i = 0; i<N_PIR;i++ )
 	{
 		currentSample[i] = 0;
