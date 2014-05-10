@@ -1,0 +1,1 @@
+gcc input.c buffer.c calculations.c kiss_fftr.c kiss_fft.c -lm -g -o PIR
