@@ -17,6 +17,7 @@
 #include "kiss_fftr.h"
 #include "buffer.h"
 #include "calculations.h"
+#include <pthread.h>
 
 
 int indexOfBuffer;

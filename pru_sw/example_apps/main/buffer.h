@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "kiss_fftr.h"
+#include "define.h"
+#include "buffer.h"
 
 
 
@@ -7,6 +12,7 @@ int currentSample[N_PIR]; // where to add next value
 int last_FFT; // how many samples sinse last FFT
 int ready; // Indicates when to start FFT
 
+pthread_mutex_t m;
 
 int createBuffer();
 

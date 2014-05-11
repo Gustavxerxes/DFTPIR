@@ -4,7 +4,7 @@ LIBDIR_APP_LOADER?=../app_loader/lib
 INCDIR_APP_LOADER?=../app_loader/include
 BINDIR?=../bin
 
-CFLAGS+= -Wall -std=c99 -I$(INCDIR_APP_LOADER) -D__DEBUG -O2 -mtune=cortex-a8 -march=armv7-a -lm -ptread
+CFLAGS+= -Wall -std=c99 -I$(INCDIR_APP_LOADER) -D__DEBUG -O2 -mtune=cortex-a8 -march=armv7-a -lm -pthread
 LDFLAGS+=-L$(LIBDIR_APP_LOADER) -lprussdrv
 OBJDIR=obj
 TARGET=$(BINDIR)/main
@@ -12,7 +12,7 @@ TARGET=$(BINDIR)/main
 _DEPS =
 DEPS = $(patsubst %,$(INCDIR_APP_LOADER)/%,$(_DEPS))
 
-_OBJ =  pir_ringbuff.o
+_OBJ =  pir_ringbuff.o input.o buffer.o calculations.o kiss_fftr.o kiss_fft.o 
 OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
 

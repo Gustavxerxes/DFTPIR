@@ -4,7 +4,6 @@
 #include "define.h"
 #include "buffer.h"
 
-pthread_mutex_t m;
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
 	int i;

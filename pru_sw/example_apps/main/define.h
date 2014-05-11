@@ -1,3 +1,4 @@
+
 #define N_PIR 8 //Hur många pir vi använder
 #define N_SAMPLES 1024
 #define RINGBUFFER_SIZE 8000
