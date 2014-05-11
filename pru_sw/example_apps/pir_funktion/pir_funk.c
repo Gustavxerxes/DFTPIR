@@ -2,6 +2,7 @@
 // Standard header files
 #include <stdio.h>
 #include <sys/mman.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
@@ -12,10 +13,8 @@
 #include <pruss_intc_mapping.h>
 #include "pir_funk.h"
 
-
 /* initiates and starts the pruss */
 int prussStart(void){
-   
     unsigned int ret;
     tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
 
@@ -56,7 +55,6 @@ int prussStart(void){
     /* Allocate Shared PRU memory. */
     prussdrv_map_prumem(PRUSS0_SHARED_DATARAM, &sharedMem);
     sharedMem_chan = (uint16_t*) sharedMem;
-    
 
 	return 0;
 }
@@ -74,14 +72,12 @@ int prussGetCols(void){
 
 /* Funktion to get the data to the vector*/
 int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]){
-	
-	/* Wait until PRU0 has finished execution */
-	prussdrv_pru_wait_event(PRU_EVTOUT_0); // there's a bug that makes the pruss driver execute interrupts twice, se: https://github.com/beagleboard/am335x_pru_package/issues/3
-	prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
-	
 	/* ignore one of the twin interrupts */
 	prussdrv_pru_wait_event(PRU_EVTOUT_0); 
 	prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
+	/* Wait until PRU0 has finished execution */
+	prussdrv_pru_wait_event(PRU_EVTOUT_0); // there's a bug that makes the pruss driver execute interrupts twice, se: https://github.com/beagleboard/am335x_pru_package/issues/3
+	
 	int retVal = 0;
 	uint32_t flag = sharedMem_chan[0];
 	unsigned int offset = 0;
@@ -96,7 +92,9 @@ int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]){
 			matrix[i][k] = sharedMem_chan[k+offset+i];
 		}		
 	}
+	
 	prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
+	
 	return retVal;
 }
 

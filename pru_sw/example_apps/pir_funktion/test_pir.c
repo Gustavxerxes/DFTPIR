@@ -21,9 +21,9 @@ int main (void){
 	
 	printf("[ \n");
 	for(int j = 0; j < 1000; ++j){
-
-
-		prussGetData(matrix); //needed
+	
+		prussGetData(matrix);
+	/*
 		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
 			for(int i = 0 ; i< 2; ++i){
 				//printf("chan %d : %04.2f ", i , matrix[i][k]*3.2227);
@@ -31,6 +31,7 @@ int main (void){
 			}
 			printf(";\n");
 		}
+		*/
 	}
 	printf("] \n");
 	
