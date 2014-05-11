@@ -20,7 +20,7 @@ int main (void){
 	uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]; //needed
 	
 	// printf("[ \n");
-	for(int j = 0; j < 1000; ++j){
+	for(int j = 0; j < 1000; ){
 	
 		prussGetData(matrix);
 		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
