@@ -72,6 +72,7 @@ int prussGetCols(void){
 
 /* Funktion to get the data to the vector*/
 int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]){
+
 	/* ignore one of the twin interrupts */
 	prussdrv_pru_wait_event(PRU_EVTOUT_0); 
 	prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
@@ -89,7 +90,7 @@ int prussGetData(uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]){
 	
 	for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
 		for(int i = 0 ; i< NUM_CHANNELS ; ++i){
-			matrix[i][k] = sharedMem_chan[k+offset+i];
+			retVal |= addbuffer(sharedMem_chan[k+offset+i]);
 		}		
 	}
 	

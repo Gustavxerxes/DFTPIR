@@ -34,7 +34,7 @@ static double sec(void)
 
 
 pthread_t thread;
-pthread_mutex_t m;
+
 pthread_cond_t myconvar;
 
 
@@ -61,10 +61,18 @@ int calc_thread(void){
 
 int main(){
 	createBuffer();
-	pthread_mutex_init(&m, NULL);
+	
 	pthread_cond_init(&myconvar,NULL);
-
+	int start = prussStart(); //needed
 	pthread_create(&thread, NULL,calc_thread);
+	int ret;
+	while(1){
+	
+		ret = prussGetData(NULL);
+		if(ret == 1){
+			pthread_cond_signal(&myconvar);
+		}
+	}
 } 
 
 
