@@ -7,6 +7,6 @@
 #define RINGBUFFER_SIZE 8000
 #define N_BEFOR_FFT 64
 #define SAVE_FFT 10
-#define threshold 1
-
+//define threshold 1
+#define SAVE_MATLAB
 #endif

@@ -30,6 +30,12 @@
 kiss_fft_scalar temp[N_PIR][N_SAMPLES];
 
 
+#ifdef SAVE_MATLAB
+		FILE *fp;
+		FILE *fpfft
+#endif
+
+
 static double sec(void)
 {
 	struct timeval	time;
@@ -80,6 +86,18 @@ int main(){
 	printf("..\n");
 	//pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
+	#ifdef SAVE_MATLAB
+	fp = fopen("data.m", w);
+	fpfft = fopen("fftdata.m", w);
+
+	fprintf(fp, " data = { \n");
+	fprintf(fpfft, " fftdata = { \n");
+
+	#endif
+
+
+
+
 	while(1){
 		//printf("while\n");
 		//start = sec();

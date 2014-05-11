@@ -6,6 +6,8 @@
 #include "calculations.h"
 
 
+
+
 kiss_fft_cpx out[SAVE_FFT][N_PIR][N_SAMPLES]; 
 int calc = 0;
 int leftTilFull = SAVE_FFT;
@@ -24,11 +26,22 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		leftTilFull = (leftTilFull - 1);
 	}
 	else{ //do some calculation
-	for(i = 0; i < 15 ; i ++){
+	for(i = 0; i < N_SAMPLES ; i ++){
 		for(j = 0 ; j < N_PIR ; j++){
 			//printf("PIR %d: ",j);
-				printf(" %d ",abs((int)((out[calc][j][i]).r)));
+			//printf(" %d ",abs((int)((out[calc][j][i]).r)));
+#ifdef SAVE_MATLAB
+				fprintf(fpfft, "%d+%dj, ",out[calc][j][i]).r, out[calc][j][i]).i );
+				fprintf(fp, " %d, ", values[i][j] );
+#endif
 			}
+
+#ifdef SAVE_MATLAB
+				fprintf(fpfft, " ; ");
+				fprintf(fp, " ; ");
+#endif
+
+
 		printf(";\n");	
 		}
 	}
