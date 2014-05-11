@@ -11,7 +11,7 @@
 // Driver header file
 #include "prussdrv.h"
 #include <pruss_intc_mapping.h>
-#include "pir_funk.h"
+#include "pir_ringbuff.h"
 
 /* initiates and starts the pruss */
 int prussStart(void){

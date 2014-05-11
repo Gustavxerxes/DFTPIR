@@ -1,5 +1,5 @@
-#ifndef PIRFUNK_H
-#define PIRFUNK_H
+#ifndef PIRRING_H
+#define PIRRING_H
 
 #define PRU_NUM 	 1
 #define OFFSET_SHAREDRAM 0		
