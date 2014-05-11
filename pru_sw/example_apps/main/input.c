@@ -11,13 +11,20 @@
 //#include "prussdrv.h"
 //#include <pruss_intc_mapping.h>
 
-#include "define.h"
+//#include "define.h"
 
 #include "_kiss_fft_guts.h"
 #include "kiss_fftr.h"
 #include "buffer.h"
 #include "calculations.h"
 #include "pir_ringbuff.h"
+
+#define N_PIR 8 //Hur många pir vi använder
+#define N_SAMPLES 1024
+#define RINGBUFFER_SIZE 8000
+#define N_BEFOR_FFT 128
+#define SAVE_FFT 10
+#define threshold 1
 
 
 kiss_fft_scalar temp[N_PIR][N_SAMPLES];
@@ -43,10 +50,10 @@ void* calc_thread(void* i){
 	double end;
 	while(1){
 	pthread_mutex_lock(&m);
-		while(last_FFT < N_BEFORE_FFT){
+		while(last_FFT < N_BEFOR_FFT){
 			pthread_cond_wait(&myconvar,&m);
 		}
-		if(last_FFT >= N_BEFORE_FFT){
+		if(last_FFT >= N_BEFOR_FFT){
 			start = sec();
 			getBuffer(temp);
 			

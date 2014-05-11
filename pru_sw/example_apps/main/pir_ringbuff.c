@@ -57,6 +57,9 @@ int prussStart(void){
     prussdrv_map_prumem(PRUSS0_SHARED_DATARAM, &sharedMem);
     sharedMem_chan = (uint16_t*) sharedMem;
 
+    puts("loaded memory");
+
+
 	return 0;
 }
 
@@ -75,6 +78,7 @@ int prussGetCols(void){
 int prussGetData(void){
 
 	/* ignore one of the twin interrupts */
+	
 	prussdrv_pru_wait_event(PRU_EVTOUT_0); 
 	prussdrv_pru_clear_event(PRU_EVTOUT_0, PRU0_ARM_INTERRUPT);
 	/* Wait until PRU0 has finished execution */

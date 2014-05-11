@@ -28,7 +28,7 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		for(j = 0 ; j < N_PIR ; j++){
 			printf("PIR %d: ",j);
 			for(i = 0; i < 100 ; i ++){
-				//printf("%d ",(int)values[j][i]);
+				printf("%d ",(int)values[j][i]);
 			}
 			
 		}printf("i\n");
@@ -36,14 +36,15 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 	
 	calc=(calc + 1) % SAVE_FFT;
 }
-
+/*
 void setScale(int* s){
 	int i;
 	for(i=0;i<N_PIR;i++){
-	scale[i]=s[i];
+		scale[i]=s[i];
 
+	}
 }
-}
+*/
 
 kiss_fft_cpx *calculate_fftr(kiss_fft_scalar* value, int length, kiss_fft_cpx* fout)
 /*
