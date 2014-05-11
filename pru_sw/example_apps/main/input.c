@@ -11,7 +11,7 @@
 //#include "prussdrv.h"
 //#include <pruss_intc_mapping.h>
 
-//#include "define.h"
+#include "define.h"
 
 #include "_kiss_fft_guts.h"
 #include "kiss_fftr.h"
@@ -19,12 +19,12 @@
 #include "calculations.h"
 #include "pir_ringbuff.h"
 
-#define N_PIR 8 //Hur många pir vi använder
-#define N_SAMPLES 1024
-#define RINGBUFFER_SIZE 8000
-#define N_BEFOR_FFT 128
-#define SAVE_FFT 10
-#define threshold 1
+//#define N_PIR 8 //Hur många pir vi använder
+//#define N_SAMPLES 1024
+//#define RINGBUFFER_SIZE 8000
+//#define N_BEFOR_FFT 128
+//#define SAVE_FFT 10
+//#define threshold 1
 
 
 kiss_fft_scalar temp[N_PIR][N_SAMPLES];
@@ -74,21 +74,28 @@ int main(){
 	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
 	double start;
 	double end;
+	int done = 0;
 	//pthread_cond_init(&myconvar,NULL);
 	prussStart(); //needed
 	printf("..\n");
 	//pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
 	while(1){
-		printf("while\n");
+		//printf("while\n");
+		//start = sec();
 		ret = prussGetData();
-		printf("done\n");
-		if(ret == 1){
-			start = sec();
+		
+		//printf("%d\n",done);
+		//printf("Time: %f\n",end-start);
+		if(ret == 1 && done < 50){
+			done++;
+			//printf("%d\n",done);
 			getBuffer(temp);
 			calculate(temp);
-			end = sec();
-			printf("Time: %f\n",end-start);
+			//end = sec();
+			//printf("Time: %f\n",end-start);
+		}else if(done>=50){
+			break;
 		}
 	}
 } 

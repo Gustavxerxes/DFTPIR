@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
 #include "define.h"
 #include "buffer_1.h"
 #include "calculations.h"
@@ -24,16 +24,17 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		leftTilFull = (leftTilFull - 1);
 	}
 	else{ //do some calculation
+	for(i = 0; i < 15 ; i ++){
 		for(j = 0 ; j < N_PIR ; j++){
-			printf("PIR %d: ",j);
-			for(i = 0; i < 100 ; i ++){
-				printf("%d ",(int)values[j][i]);
+			//printf("PIR %d: ",j);
+				printf(" %d ",abs((int)((out[calc][j][i]).r)));
 			}
-			
-		}printf("i\n");
+		printf(";\n");	
+		}
 	}
 	
 	calc=(calc + 1) % SAVE_FFT;
+	return 1;
 }
 /*
 void setScale(int* s){

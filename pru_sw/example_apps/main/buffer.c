@@ -5,14 +5,18 @@
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
 	int i;
+	int j;
 	last_FFT = 0;
 	//pthread_mutex_init(&m, NULL);
 	for(i = 0; i<N_PIR;i++ )
 	{
-		currentSample[i] = 0;
-		ready = 0;
-		
+		currentSample[i] = N_SAMPLES-N_BEFOR_FFT;
+		for(j = 0 ; j<RINGBUFFER_SIZE;j++){
+			channels[i][j]=0;	
+		}
 	}
+	
+	
 	return 1;
 }
 
@@ -28,12 +32,10 @@ int addInBuffer(int channel, int value){
 	if(channel == (N_PIR-1)){
 	//pthread_mutex_lock(&m);
 		last_FFT++;
+		//printf("%d\n",last_FFT);
 	//pthread_mutex_unlock(&m);
-		if(ready == 0 && currentSample[channel] > N_SAMPLES){
-			ready = 1;
-		}
 	}
-	if(ready == 1 && last_FFT >= N_BEFOR_FFT){
+	if(last_FFT >= N_BEFOR_FFT){
 		return 1;
 	}
 	return 0;

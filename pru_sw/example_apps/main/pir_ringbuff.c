@@ -13,6 +13,7 @@
 #include <pruss_intc_mapping.h>
 #include "pir_ringbuff.h"
 #include "buffer_1.h"
+#include "define.h"
 
 /* initiates and starts the pruss */
 int prussStart(void){
@@ -45,10 +46,10 @@ int prussStart(void){
 	puts("pruss intc init done");
 
     /* Execute example on PRU */
-    prussdrv_exec_program (0, "../pir/buffer.bin");
+    prussdrv_exec_program (0, "./buffer.bin");
     puts("exec pru0");
 
-    prussdrv_exec_program (1, "../pir/sampler.bin");
+    prussdrv_exec_program (1, "./sampler.bin");
     
      puts("exec pru1");
 
@@ -96,9 +97,9 @@ int prussGetData(void){
 	}
 	
 	for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
-		for(int i = 0 ; i< NUM_CHANNELS ; ++i){
+		for(int i = 0 ; i< N_PIR ; ++i){
 			retVal |= addInBuffer(i,sharedMem_chan[k+offset+i]);
-	//		puts(".");
+			//printf("%d",i);
 		}		
 	}
 	
