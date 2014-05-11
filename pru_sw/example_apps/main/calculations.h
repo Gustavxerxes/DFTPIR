@@ -11,3 +11,8 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]);
 kiss_fft_cpx *calculate_fftr(kiss_fft_scalar* value, int length, kiss_fft_cpx* fout);
 
 #endif
+
+#ifdef SAVE_MATLAB
+		FILE *fp;
+		FILE *fpfft;
+#endif

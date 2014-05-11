@@ -18,7 +18,7 @@ int leftTilFull = SAVE_FFT;
 int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av formen values[channels][nbrSamples]
 	int i;
 	int j;
-	for(i = 0; i<N_PIR;i++){
+	for(i = 0; i<N_PIR; i++){
 		calculate_fftr(values[i], N_SAMPLES,out[calc][i]);
 	}
 
@@ -26,23 +26,25 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		leftTilFull = (leftTilFull - 1);
 	}
 	else{ //do some calculation
-	for(i = 0; i < N_SAMPLES ; i ++){
-		for(j = 0 ; j < N_PIR ; j++){
+	for(j = 0 ; j < N_PIR-1 ; j++){
+	
+		fprintf(fpfft, "fftdata[%d] = {",i);
+		for(i = 0; i < 64 ; i ++){
 			//printf("PIR %d: ",j);
 			//printf(" %d ",abs((int)((out[calc][j][i]).r)));
 #ifdef SAVE_MATLAB
-				fprintf(fpfft, "%d+%dj, ",out[calc][j][i]).r, out[calc][j][i]).i );
-				fprintf(fp, " %d, ", values[i][j] );
+				fprintf(fpfft, "%d + %dj, ",(int)(out[calc][j][i]).r, (int)(out[calc][j][i]).i );
+				fprintf(fp, " %d, ", (int)values[j][1024-64+i] );
 #endif
 			}
 
 #ifdef SAVE_MATLAB
-				fprintf(fpfft, " ; ");
-				fprintf(fp, " ; ");
+				fprintf(fpfft, "%d + %dj} \n", (int)(out[calc][N_PIR-1][i]).r, (int)(out[calc][N_PIR-1][i]).i );
+		//		fprintf(fp, " %d; \n", (int)values[N_PIR-1][1024-64+i] );
 #endif
 
 
-		printf(";\n");	
+		//printf(";\n");	
 		}
 	}
 	

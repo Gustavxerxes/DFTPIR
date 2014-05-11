@@ -44,10 +44,10 @@ int prussStart(void){
 	puts("pruss intc init done");
 
     /* Execute example on PRU */
-    prussdrv_exec_program (0, "../pir/buffer.bin");
+    prussdrv_exec_program (0, "./buffer.bin");
     puts("exec pru0");
 
-    prussdrv_exec_program (1, "../pir/sampler.bin");
+    prussdrv_exec_program (1, "./sampler.bin");
     
      puts("exec pru1");
 

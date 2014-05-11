@@ -30,10 +30,7 @@
 kiss_fft_scalar temp[N_PIR][N_SAMPLES];
 
 
-#ifdef SAVE_MATLAB
-		FILE *fp;
-		FILE *fpfft
-#endif
+
 
 
 static double sec(void)
@@ -87,11 +84,11 @@ int main(){
 	//pthread_create(&thread, NULL,calc_thread,0);
 	int ret;
 	#ifdef SAVE_MATLAB
-	fp = fopen("data.m", w);
-	fpfft = fopen("fftdata.m", w);
+	fp = fopen("data.m", "a");
+	fpfft = fopen("fftdata.m", "a");
 
-	fprintf(fp, " data = { \n");
-	fprintf(fpfft, " fftdata = { \n");
+	//fprintf(fp, " data = { \n");
+	//fprintf(fpfft, " fftdata = { \n");
 
 	#endif
 
@@ -116,6 +113,11 @@ int main(){
 			break;
 		}
 	}
+	
+	//fprintf(fp, " } \n");
+	//fprintf(fpfft, " } \n");
+	fclose(fp);
+	fclose(fpfft);
 } 
 
 

@@ -4,7 +4,7 @@ LIBDIR_APP_LOADER?=../app_loader/lib
 INCDIR_APP_LOADER?=../app_loader/include
 BINDIR?=../bin
 
-CFLAGS+= -Wall -std=c99 -I$(INCDIR_APP_LOADER) -D__DEBUG -O2 -mtune=cortex-a8 -march=armv7-a -lm -pthread
+CFLAGS+= -Wall -std=c99 -I$(INCDIR_APP_LOADER) -D__DEBUG -g3 -O2 -mtune=cortex-a8 -march=armv7-a -lm -pthread
 LDFLAGS+=-L$(LIBDIR_APP_LOADER) -lprussdrv
 OBJDIR=obj
 TARGET=$(BINDIR)/main
