@@ -42,35 +42,7 @@ static double sec(void)
 
 
 
-pthread_t thread;
 
-pthread_cond_t myconvar;
-
-/*
-void* calc_thread(void* i){
-	
-	
-	while(1){
-	//pthread_mutex_lock(&m);
-
-		while(last_FFT < N_BEFORE_FFT){
-			printf("waitning...");
-
-		while(last_FFT < N_BEFOR_FFT){
-	//		pthread_cond_wait(&myconvar,&m);
-			printf("out\n");
-		}
-		if(last_FFT >= N_BEFOR_FFT){
-			
-			getBuffer(temp);
-			
-		}
-	pthread_mutex_unlock(&m);
-	calculate(temp);
-	end = sec();
-	printf("Time: %f\n",end-start);
-	}
-}*/
 
 int main(){
 	createBuffer();
@@ -102,15 +74,13 @@ int main(){
 		
 		//printf("%d\n",done);
 		//printf("Time: %f\n",end-start);
-		if(ret == 1 && done < 50){
+		if(ret == 1){
 			done++;
 			//printf("%d\n",done);
 			getBuffer(temp);
 			calculate(temp);
 			//end = sec();
 			//printf("Time: %f\n",end-start);
-		}else if(done>=50){
-			break;
 		}
 	}
 	

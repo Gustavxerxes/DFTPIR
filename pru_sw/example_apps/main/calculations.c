@@ -13,45 +13,42 @@ int calc;
 int leftTilFull = SAVE_FFT;
 
 
-static int freq_min = {800,800,800,800,800,800,800,800,800,800,800,800,800,800,800}; // minimum of the 15 first freq
+int freq_min[15] = {0,700,700,450,800,800,650,500,450,450,600,400,450,550,400}; // minimum of the 15 first freq
 
 
 
 int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av formen values[channels][nbrSamples]
 	int i;
 	int j;
+	calc = 0;
 	int score = 0;
 	int diff = 0;
 	calc = 0;
 	for(i = 0; i<N_PIR; i++){
-		calculate_fftr(values[i], N_SAMPLES,out[calc][i]);
-	}
-
-	if(leftTilFull){
-		leftTilFull = (leftTilFull - 1);
-	}
-	else{ //do some calculation
-		for(j = 0 ; j < N_PIR-1 ; j++){
-			//fprintf(fpfft, "fftdata[%d] = {",j);
-			for(i = 0; i < 15 ; i ++){
-				diff = abs((int)out[calc][j][i].r) - freq_min[i] + diff;
-			}
-		score = diff/N_PIR + score;
-#ifdef SAVE_MATLAB
-				fprintf(fpfft, "%d + %dj, ",(int)(out[calc][j][i]).r, (int)(out[calc][j][i]).i );
-				fprintf(fp, " %d, ", (int)values[j][1024-64+i] );
-#endif
-			}
-
-#ifdef SAVE_MATLAB
-				fprintf(fpfft, "%d + %dj} \n", (int)(out[calc][N_PIR-1][i]).r, (int)(out[calc][N_PIR-1][i]).i );
-		//		fprintf(fp, " %d; \n", (int)values[N_PIR-1][1024-64+i] );
-#endif
-
-
-		//printf(";\n");	
+		for(j=0;j<N_SAMPLES;j++){
+			printf("%d ",values[i][j]);
 		}
-	
+		printf("\n");
+		calculate_fftr(values[i], N_SAMPLES,out[calc][i]);
+		
+	}
+
+ //do some calculation
+		printf("::");
+		for(i = 1 ; i < 15 ; i++){
+		diff = 0;
+			for(j = 0; j < N_PIR ; j++){
+				diff = abs((int)out[calc][j][i].r) + diff - freq_min[i];
+			}
+//		printf("%d ",diff/N_PIR);
+		score = diff/N_PIR + score;
+		
+		}
+		printf(" -> %d\n",score);
+		if(score>2000){
+//			printf("!!ALERT!!\n");
+
+		}	
 	calc=(calc + 1) % SAVE_FFT;
 	return 1;
 }
@@ -72,7 +69,7 @@ typedef struct {
 					  
  */
 { 
-  int i;
+ 
   int nfft = length;
   //kiss_fft_scalar rin[nfft+2];
   //for(i = 0; i<length;i++){

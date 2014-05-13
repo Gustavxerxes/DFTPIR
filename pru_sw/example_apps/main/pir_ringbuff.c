@@ -99,7 +99,7 @@ int prussGetData(void){
 	for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
 		for(int i = 0 ; i< N_PIR ; ++i){
 			retVal |= addInBuffer(i,sharedMem_chan[k+offset+i]);
-			//printf("%d",i);
+			printf("PIR %d = %d",i,sharedMem_chan[k+offset+i]);
 		}		
 	}
 	
