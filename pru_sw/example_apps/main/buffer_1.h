@@ -10,8 +10,8 @@ int first; //Pointer to next sampel to start FFT
 int currentSample[N_PIR]; // where to add next value
 int last_FFT; // how many samples sinse last FFT
 int ready; // Indicates when to start FFT
+kiss_fft_scalar value[N_PIR][N_SAMPLES];
 
-//pthread_mutex_t m;
 
 int createBuffer();
 
@@ -19,6 +19,6 @@ int createBuffer();
 
 int addInBuffer(int channel, int value);
 
-void getBuffer(kiss_fft_scalar values[N_PIR][N_SAMPLES]);
+void getBuffer();
 
 #endif

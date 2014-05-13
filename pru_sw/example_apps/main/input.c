@@ -46,48 +46,28 @@ static double sec(void)
 
 int main(){
 	createBuffer();
-	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
-	double start;
-	double end;
-	int done = 0;
-	//pthread_cond_init(&myconvar,NULL);
+//	kiss_fft_scalar temp[N_PIR][N_SAMPLES];
+//	double start;
+//	double end;
+//	int done = 0;
 	prussStart(); //needed
 	printf("..\n");
-	//pthread_create(&thread, NULL,calc_thread,0);
+
 	int ret;
-	#ifdef SAVE_MATLAB
-	fp = fopen("data.m", "a");
-	fpfft = fopen("fftdata.m", "a");
-
-	//fprintf(fp, " data = { \n");
-	//fprintf(fpfft, " fftdata = { \n");
-
-	#endif
-
-
-
-
 	while(1){
 		//printf("while\n");
-		//start = sec();
+//		start = sec();
 		ret = prussGetData();
 		
 		//printf("%d\n",done);
 		//printf("Time: %f\n",end-start);
 		if(ret == 1){
-			done++;
-			//printf("%d\n",done);
-			getBuffer(temp);
-			calculate(temp);
-			//end = sec();
-			//printf("Time: %f\n",end-start);
+			getBuffer();
+			calculate();
+//			end = sec();
+//			printf("Time: %f\n",end-start);
 		}
 	}
-	
-	//fprintf(fp, " } \n");
-	//fprintf(fpfft, " } \n");
-	fclose(fp);
-	fclose(fpfft);
 } 
 
 

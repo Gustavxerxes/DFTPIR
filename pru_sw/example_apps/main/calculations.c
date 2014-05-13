@@ -13,11 +13,11 @@ int calc;
 int leftTilFull = SAVE_FFT;
 
 
-int freq_min[15] = {0,700,700,450,800,800,650,500,450,450,600,400,450,550,400}; // minimum of the 15 first freq
+int freq_min[15] = {0,10000,5000,10000,7000,10000,5000,5000,8000,8000,8000,10000,10000,5000,5000}; // minimum of the 15 first freq
 
 
 
-int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av formen values[channels][nbrSamples]
+int calculate(){ //values borde vara av formen values[channels][nbrSamples]
 	int i;
 	int j;
 	calc = 0;
@@ -25,30 +25,30 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 	int diff = 0;
 	calc = 0;
 	for(i = 0; i<N_PIR; i++){
-	for(j=0;j<N_SAMPLES;j++){
-//			printf("%d ",values[i][j]);
-		}
-//		printf("\n");
-		calculate_fftr(values[i], N_SAMPLES,out[calc][i]);
-		
+//	printf("PIR-%d ",i);
+//	for(j =0;j<N_SAMPLES;j++)
+//		printf("%d ",(int)value[i][j]);
+		calculate_fftr(value[i], N_SAMPLES,out[calc][i]);
+//		printf("\n\n");
 	}
 
  //do some calculation
-		printf("::");
+	//	printf("::");
 		for(i = 1 ; i < 15 ; i++){
-		diff = 0;
+			diff = 0;
 			for(j = 0; j < N_PIR ; j++){
-				diff = abs((int)out[calc][j][i].r) + diff - freq_min[i];
+				diff = abs((int)out[calc][j][i].r) + diff;// - freq_min[i];
 			}
-		printf("%d ",diff/N_PIR);
+//		printf("%d ",diff/N_PIR);
 		score = diff/N_PIR + score;
 		
 		}
-		printf(" -> %d\n",score);
-		if(score>2000){
-//			printf("!!ALERT!!\n");
+//		printf(" -> %d\n",score);
+		if(score>50000){
+			printf("ALERT: ");
 
 		}	
+		printf("%d\n",score);
 	calc=(calc + 1) % SAVE_FFT;
 	return 1;
 }

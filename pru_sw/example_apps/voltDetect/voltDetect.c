@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/mman.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
@@ -21,31 +22,52 @@ int main (void){
 	uint16_t matrix[NUM_CHANNELS][SAMPLES_PR_PACKAGE]; //needed
 	// printf("[ \n");
 	int sample = 0;
+	int alarm = 0;
+	int detection[] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+	int temp;	
+	system("echo low > /sys/class/gpio/gpio60/direction");
 	for(int j = 0; j < 1000; ){
-		system("echo low < /sys/class/gpio/gpio60/direciton");
+		
+		if(alarm > 0){
+			alarm = alarm - 1;
+		}
+		if(alarm == 1){
+				system("echo low > /sys/class/gpio/gpio60/direction");
+		}
+			
 					
-		int detection[] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 		prussGetData(matrix);
-		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k=k+8){	
+		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k=k+8){
+			
 			for(int i = 0 ; i< 4; ++i){
-				//printf("chan %d : %04.2f ", i , matrix[i][k]*3.2227);
-				detection[i] = (detection[i] + abs(matrix[i][k]-275))/2;
-				printf(" detect %d : %4.2d ", i , detection[i]);
+				temp = matrix[i][k];
+				
+				//printf(" %d " , matrix[i][k]);	
+				if(temp < 260 || temp > 300){	
+				detection[i] = (6*detection[i] + 2*abs(matrix[i][k]-275))/8;
+				//printf("\n chan %d : %04.2f \n", i , matrix[i][k]*3.2227);
+				}
+				detection[i] = (31*detection[i])/32;
+					
+				//printf(" detect %d : %4.2d ", i , detection[i]);
 				
 				
-				if((detection[i] > 50) && (detection[(i+1)%4] > 50)){
-					printf( "\n \n detection in chanel: %d \n \n", detection[i]);
-					system("echo high < /sys/class/gpio/gpio60/direciton");
+				if((detection[i] > 100) && ((detection[(i+1)%4] > 30) || (detection[(i-1)%4] > 30)) && !alarm){
+					alarm = 50;
+					printf( "\n  ---- detection in chanels: %d, %d \n", i, (i+1)%4);
+					system("echo high > /sys/class/gpio/gpio60/direction");
 					
 					
 				}
 				
 			}
-			printf(";\n");
+			
 		}
 		
 	}
-	//printf("] \n");
+	printf(" detect %d : %4.2d ", 4 , detection[4]);
+	printf(" %d " , matrix[4][40]);
+	printf("] \n");
 	
 
 	int prussStop(void); //good to have in end
