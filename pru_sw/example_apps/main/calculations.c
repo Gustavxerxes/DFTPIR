@@ -25,7 +25,7 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 	int diff = 0;
 	calc = 0;
 	for(i = 0; i<N_PIR; i++){
-		for(j=0;j<N_SAMPLES;j++){
+	for(j=0;j<N_SAMPLES;j++){
 			printf("%d ",values[i][j]);
 		}
 		printf("\n");
@@ -40,7 +40,7 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 			for(j = 0; j < N_PIR ; j++){
 				diff = abs((int)out[calc][j][i].r) + diff - freq_min[i];
 			}
-//		printf("%d ",diff/N_PIR);
+		printf("%d ",diff/N_PIR);
 		score = diff/N_PIR + score;
 		
 		}

@@ -19,7 +19,7 @@ int createBuffer(){
 int addInBuffer(int channel, int value){
 	//printf("Adding value\n");
 	channels[channel][currentSample[channel]]=(kiss_fft_scalar) value;
-	printf("PIR %d = %d : %d \n ",channel,value,channels[channel][currenSample[channel]]);
+//	printf("PIR %d = %d : %d \n ",channel,value,(int)channels[channel][currentSample[channel]]);
 	currentSample[channel]++;
 	//printf("adding...\n");
 	
@@ -48,11 +48,9 @@ void getBuffer(kiss_fft_scalar values[N_PIR][N_SAMPLES]){
 	last_FFT = 0;
 	for(i = 0; i < N_PIR ; i++){
 		for(j = 0; j < N_SAMPLES ; j++){
-			start += j;
-			if(start > RINGBUFFER_SIZE){
-				start = 0;
-			}
-		values[i][j]=channels[i][(start + j) % RINGBUFFER_SIZE];
+			start++;
+			printf("value = %d and inbuffer = %d \n",(int)values[i][j],(int)channels[i][start % RINGBUFFER_SIZE]);
+		values[i][j]=channels[i][start % RINGBUFFER_SIZE];
 		}
 	}
 }
