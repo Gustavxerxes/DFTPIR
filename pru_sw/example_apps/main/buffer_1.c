@@ -5,12 +5,13 @@
 int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
 	int i;
+	
 	last_FFT = 0;
-	first = N_SAMPLES - N_BEFOR_FFT;
+	first = 0;
 	//pthread_mutex_init(&m, NULL);
 	for(i = 0; i<N_PIR;i++ )
 	{
-		currentSample[i] = 0;
+		currentSample[i] =N_SAMPLES - 64;
 		ready = 0;
 		
 	}
@@ -38,7 +39,7 @@ int addInBuffer(int channel, int value){
 
 void getBuffer(kiss_fft_scalar values[N_PIR][N_SAMPLES]){
 	int start = first;
-	first += N_BEFOR_FFT;
+	first =(first+ N_BEFOR_FFT) % RINGBUFFER_SIZE;
 	int i;
 	int j;
 	last_FFT = 0;
