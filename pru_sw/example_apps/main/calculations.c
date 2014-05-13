@@ -33,7 +33,7 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		for(j = 0 ; j < N_PIR-1 ; j++){
 			//fprintf(fpfft, "fftdata[%d] = {",j);
 			for(i = 0; i < 15 ; i ++){
-				diff = out[calc][j][i] - freq_min[i] + diff;
+				diff = abs((int)out[calc][j][i].r) - freq_min[i] + diff;
 			}
 		score = diff/N_PIR + score;
 #ifdef SAVE_MATLAB
