@@ -11,7 +11,7 @@ int createBuffer(){
 	//pthread_mutex_init(&m, NULL);
 	for(i = 0; i<N_PIR;i++ )
 	{
-		currentSample[i] =N_SAMPLES - 64;
+		currentSample[i] =N_SAMPLES - N_BEFOR_FFT;
 		ready = 0;
 		
 	}

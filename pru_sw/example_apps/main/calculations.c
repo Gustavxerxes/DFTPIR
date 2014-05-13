@@ -26,9 +26,9 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 	calc = 0;
 	for(i = 0; i<N_PIR; i++){
 	for(j=0;j<N_SAMPLES;j++){
-			printf("%d ",values[i][j]);
+//			printf("%d ",values[i][j]);
 		}
-		printf("\n");
+//		printf("\n");
 		calculate_fftr(values[i], N_SAMPLES,out[calc][i]);
 		
 	}
