@@ -9,7 +9,7 @@
 
 
 kiss_fft_cpx out[SAVE_FFT][N_PIR][N_SAMPLES]; 
-int calc = 0;
+int calc;
 int leftTilFull = SAVE_FFT;
 
 
@@ -22,6 +22,7 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 	int j;
 	int score = 0;
 	int diff = 0;
+	calc = 0;
 	for(i = 0; i<N_PIR; i++){
 		calculate_fftr(values[i], N_SAMPLES,out[calc][i]);
 	}
@@ -50,17 +51,11 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 
 		//printf(";\n");	
 		}
-	}
 	
 	calc=(calc + 1) % SAVE_FFT;
 	return 1;
 }
 
-
-int score(int** freq_data,int channels,int size){
-	
-
-}
 
 
 kiss_fft_cpx *calculate_fftr(kiss_fft_scalar* value, int length, kiss_fft_cpx* fout)

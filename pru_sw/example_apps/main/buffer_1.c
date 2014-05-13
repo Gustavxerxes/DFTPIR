@@ -19,6 +19,7 @@ int createBuffer(){
 int addInBuffer(int channel, int value){
 	//printf("Adding value\n");
 	channels[channel][currentSample[channel]]=(kiss_fft_scalar) value;
+	printf("PIR %d = %d : %d \n ",channel,value,channels[channel][currenSample[channel]]);
 	currentSample[channel]++;
 	//printf("adding...\n");
 	
