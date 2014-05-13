@@ -6,6 +6,7 @@ int createBuffer(){
 	printf("Creating buffer with %d channels and %d samples\n ",N_PIR,N_SAMPLES);
 	int i;
 	last_FFT = 0;
+	first = N_SAMPLES - N_BEFOR_FFT;
 	//pthread_mutex_init(&m, NULL);
 	for(i = 0; i<N_PIR;i++ )
 	{
@@ -27,14 +28,9 @@ int addInBuffer(int channel, int value){
 		currentSample[channel]=0;
 	}
 	if(channel == (N_PIR-1)){
-	//pthread_mutex_lock(&m);
 		last_FFT++;
-	//pthread_mutex_unlock(&m);
-		if(ready == 0 && currentSample[channel] > N_SAMPLES){
-			ready = 1;
-		}
 	}
-	if(ready == 1 && last_FFT >= N_BEFOR_FFT){
+	if(last_FFT >= N_BEFOR_FFT){
 		return 1;
 	}
 	return 0;
