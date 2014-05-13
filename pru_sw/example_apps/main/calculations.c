@@ -26,7 +26,7 @@ int calculate(kiss_fft_scalar values[N_PIR][N_SAMPLES]){ //values borde vara av 
 		leftTilFull = (leftTilFull - 1);
 	}
 	else{ //do some calculation
-	for(j = 0 ; j < N_PIR-1 ; j++){
+	for(j = 0 ; j < N_PIR ; j++){
 	
 		fprintf(fpfft, "fftdata[%d] = {",j);
 		for(i = 0; i < 64 ; i ++){

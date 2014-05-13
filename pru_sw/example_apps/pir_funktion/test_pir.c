@@ -24,9 +24,9 @@ int main (void){
 	
 		prussGetData(matrix);
 		for(int k = 0; k < SAMPLES_PR_PACKAGE ; k +=8){	
-			for(int i = 0 ; i< 8; ++i){
-				//printf("chan %d : %04.2f ", i , matrix[i][k]*3.2227);
-				printf(" %04.2f  " , matrix[i][k]*3.2227);
+			for(int i = 0 ; i< 4; ++i){
+				printf("chan %d : %04.2f ", i , matrix[i][k]*3.2227);
+				//printf(" %04.2f  " , matrix[i][k]*3.2227);
 				//printf(" %04x " , matrix[i][k]);
 			}
 			printf(";\n");
